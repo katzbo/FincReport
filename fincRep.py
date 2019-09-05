@@ -79,7 +79,7 @@ class ChargeCatrgory:
 #addChargeToCategory(charge2)
 #print("the sum of category " + categoryList[0].name + " and sum " + str(categoryList[0].sum))
 print("financial report start")
-#os.system(webdriver-manager start)
+#os.system("webdriver-manager start &")
 
 rows = os.system("protractor conf.js")
 
