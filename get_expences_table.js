@@ -65,9 +65,8 @@ describe("get expenses list in Leumi bank", function() {
             };
         });
         expensesToFile.then(function (expensesToFile) {
-            console.log(expensesToFile);
+            fs.writeFileSync("expenses.json",JSON.stringify([...expensesToFile]));
         });
-        fs.writeFileSync("expenses.json", JSON.stringify(expensesToFile));
     });
 });
 
