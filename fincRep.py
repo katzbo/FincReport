@@ -4,8 +4,10 @@ from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 import requests
 import os
+import json
 
 googleApiKey = "key=xxx"
+
 
 class GooglePlacesApiImpl:
     """docstring for GooglePlacesApiImpl"""
@@ -16,12 +18,14 @@ class GooglePlacesApiImpl:
         self.googleApiKey = googleApiKey
 
     def getPlaceId(self, placeName):
-        params = {'input': placeName, 'inputtype': "textquery", 'key': self.googleApiKey}
+        params = {'input': placeName,
+                  'inputtype': "textquery", 'key': self.googleApiKey}
         data = getJsonResponse(self, gSearchPlaceURL, params)
         try:
             return data['candidates'][0]['place_id']
         except:
-            raise ValueError("Place id request failed with json error response: " + data.text)
+            raise ValueError(
+                "Place id request failed with json error response: " + data.text)
 
     def getPlaceCategory(self, placeId):
         params = {"key": googleApiKey, "placeid": placeId}
@@ -31,7 +35,8 @@ class GooglePlacesApiImpl:
             placeCategory = data['result']['types']
             print(placeCategory)
         except:
-            raise ValueError("Category request failed with json error response: " + data.text)
+            raise ValueError(
+                "Category request failed with json error response: " + data.text)
 
     def getJsonResponse(self, url, params):
         r = requests.get(url=gGEtPlaceDetailsURL, params=params)
@@ -74,16 +79,28 @@ class ChargeCatrgory:
 
 #categoryList = []
 #charge1 = Charge("delek", 12, "paz", "12.2.84")
-#addChargeToCategory(charge1)
+# addChargeToCategory(charge1)
 #charge2 = Charge("delek", 34, "paz", "12.2.84")
-#addChargeToCategory(charge2)
+# addChargeToCategory(charge2)
 #print("the sum of category " + categoryList[0].name + " and sum " + str(categoryList[0].sum))
 print("financial report start")
 #os.system("webdriver-manager start &")
 
-rows = os.system("protractor conf.js")
 
-for row in rows:
-    cols = row.find_elements_by_tag("td")
-    charge = Charge(cols[0], cols[1], cols[2], cols[3], cols[4])
-    addChargeToCategory(charge)
+# prepare expenses
+os.system("protractor conf.js")
+
+# read expenses
+with open("expenses.json") as file:
+    expenses = json.load(file)
+
+for expense in expenses:
+    print(f"Name: {expense["name"]}, Amount: {expense["amount"]}")
+
+# old code
+# rows = os.system("protractor conf.js")
+
+# for row in rows:
+#     cols = row.find_elements_by_tag("td")
+#     charge = Charge(cols[0], cols[1], cols[2], cols[3], cols[4])
+#     addChargeToCategory(charge)
