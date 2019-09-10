@@ -50,12 +50,12 @@ describe("get expenses list in Leumi bank", function() {
         });
 
         // get necessary information from expenses (business name, amount)
-        const expensesToFile = expenses.map(async function(elem, index) {
+        var expensesToFile = expenses.map(async function(elem, index) {
             return {
-                name: await elem
+                name: elem
                     .element(by.className("ts-table-row-item u-flex-grow2"))
                     .getText(),
-                amount: await elem
+                amount: elem
                     .element(
                         by.className(
                             "ts-table-row-item d-none d-sm-flex xlcurrencycode-1"
@@ -64,7 +64,10 @@ describe("get expenses list in Leumi bank", function() {
                     .getText()
             };
         });
-
+        expensesToFile.then(function (expensesToFile) {
+            console.log(expensesToFile);
+        });
         fs.writeFileSync("expenses.json", JSON.stringify(expensesToFile));
     });
 });
+
