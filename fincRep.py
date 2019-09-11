@@ -86,16 +86,21 @@ class ChargeCatrgory:
 print("financial report start")
 #os.system("webdriver-manager start &")
 
+# TODO
+# get user, pass, bank
+
 
 # prepare expenses
-os.system("protractor conf.js")
+os.system("node index.js")
 
 # read expenses
-with open("expenses.json") as file:
-    expenses = json.load(file)
+with open("accounts.json") as file:
+    expenses = json.load(file)["accounts"][0]["txns"]
 
-for expense in expenses:
-    print(f"Name: {expense["name"]}, Amount: {expense["amount"]}")
+
+for key, value in expenses.items():
+    print(f"{key}: {value}")
+
 
 # old code
 # rows = os.system("protractor conf.js")
