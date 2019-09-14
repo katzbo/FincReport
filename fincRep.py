@@ -5,6 +5,7 @@ from selenium.webdriver.firefox.options import Options
 import requests
 import os
 import json
+import sys
 
 googleApiKey = "key=xxx"
 
@@ -50,7 +51,7 @@ def addChargeToCategory(charge):
             print("added " + charge.name)
             return
     print("adding charge " + charge.name)
-    category = ChargeCatrgory(charge.category)
+    category = ChargeCategory(charge.category)
     category.addCharge(charge)
     print("adding category " + category.name)
     categoryList.append(category)
@@ -64,8 +65,8 @@ class Charge:
         self.date = date
 
 
-class ChargeCatrgory:
-    """docstring for ChargeCatrgory"""
+class ChargeCategory:
+    """docstring for ChargeCategory"""
 
     def __init__(self, name):
         self.name = name
@@ -86,12 +87,17 @@ class ChargeCatrgory:
 print("financial report start")
 #os.system("webdriver-manager start &")
 
-# TODO
-# get user, pass, bank
+try:
+    # get user, pass, bank
+    user, password, bank = sys.argv[1:4]
+except IndexError:
+    print("Usage: node index.js [user] [password] [bank]")
+    print("bank could be one of: 'hapoalim', 'leumi', 'discount', 'otsarHahayal', 'visaCal', 'leumiCard', 'isracard', 'amex'")
+    sys.exit(1)
 
 
 # prepare expenses
-os.system("node index.js")
+os.system(f"node index.js {user} {password} {bank}")
 
 # read expenses
 with open("accounts.json") as file:
