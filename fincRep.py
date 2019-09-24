@@ -7,6 +7,9 @@ import os
 import json
 import sys
 
+if not os.path("node_modules").exists():
+    os.system("npm install")
+
 googleApiKey = "key=xxx"
 
 
@@ -91,7 +94,7 @@ try:
     # get user, pass, bank
     user, password, bank = sys.argv[1:4]
 except IndexError:
-    print("Usage: node index.js [user] [password] [bank]")
+    print("Usage: python fincRep.py [user] [password] [bank]")
     print("bank could be one of: 'hapoalim', 'leumi', 'discount', 'otsarHahayal', 'visaCal', 'leumiCard', 'isracard', 'amex'")
     sys.exit(1)
 
