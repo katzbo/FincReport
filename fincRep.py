@@ -7,8 +7,6 @@ import os
 import json
 import sys
 
-if not os.path("node_modules").exists():
-    os.system("npm install")
 
 googleApiKey = "key=xxx"
 
@@ -81,40 +79,33 @@ class ChargeCategory:
         self.sum += charge.price
 
 
-#categoryList = []
-#charge1 = Charge("delek", 12, "paz", "12.2.84")
-# addChargeToCategory(charge1)
-#charge2 = Charge("delek", 34, "paz", "12.2.84")
-# addChargeToCategory(charge2)
-#print("the sum of category " + categoryList[0].name + " and sum " + str(categoryList[0].sum))
-print("financial report start")
-#os.system("webdriver-manager start &")
+if __name__ == "__main__":
+    if not os.path.exists("node_modules"):
+        os.system("npm install")
+    #categoryList = []
+    #charge1 = Charge("delek", 12, "paz", "12.2.84")
+    # addChargeToCategory(charge1)
+    #charge2 = Charge("delek", 34, "paz", "12.2.84")
+    # addChargeToCategory(charge2)
+    #print("the sum of category " + categoryList[0].name + " and sum " + str(categoryList[0].sum))
+    #os.system("webdriver-manager start &")
 
-try:
-    # get user, pass, bank
-    user, password, bank = sys.argv[1:4]
-except IndexError:
-    print("Usage: python fincRep.py [user] [password] [bank]")
-    print("bank could be one of: 'hapoalim', 'leumi', 'discount', 'otsarHahayal', 'visaCal', 'leumiCard', 'isracard', 'amex'")
-    sys.exit(1)
+    try:
+        # get user, pass, bank
+        user, password, bank = sys.argv[1:4]
+        print("financial report start")
+    except ValueError:
+        print("Usage: python fincRep.py [user] [password] [bank]")
+        print("bank could be one of: 'hapoalim', 'leumi', 'discount', 'otsarHahayal', 'visaCal', 'leumiCard', 'isracard', 'amex'")
+        sys.exit(1)
 
+    # prepare expenses
+    os.system(f"node index.js {user} {password} {bank}")
 
-# prepare expenses
-os.system(f"node index.js {user} {password} {bank}")
+    # read expenses
+    with open("accounts.json", errors="ignore") as file:
+        expenses = json.load(file)["accounts"][0]["txns"]
 
-# read expenses
-with open("accounts.json") as file:
-    expenses = json.load(file)["accounts"][0]["txns"]
-
-
-for key, value in expenses.items():
-    print(f"{key}: {value}")
-
-
-# old code
-# rows = os.system("protractor conf.js")
-
-# for row in rows:
-#     cols = row.find_elements_by_tag("td")
-#     charge = Charge(cols[0], cols[1], cols[2], cols[3], cols[4])
-#     addChargeToCategory(charge)
+    # most recent expense
+    for key, value in expenses[0].items():
+        print(f"{key}: {value}")
