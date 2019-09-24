@@ -30,6 +30,7 @@ if (process.argv.length !== 5) {
         "bank could be one of: 'hapoalim', 'leumi', 'discount', 'otsarHahayal', 'visaCal', 'leumiCard', 'isracard', 'amex'"
     );
 }
-console.log(process.argv);
 
-start();
+start(process.argv[2], process.argv[3], process.argv[4])
+    .then(() => console.log("done"))
+    .catch(ex => console.error(ex));
