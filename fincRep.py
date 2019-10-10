@@ -57,15 +57,6 @@ def addChargeToCategory(charge):
     print("adding category " + category.name)
     categoryList.append(category)
 
-
-class Charge:
-    def __init__(self, name, price, companyName, date):
-        self.name = name
-        self.price = price
-        self.companyName = companyName
-        self.date = date
-
-
 class ChargeCategory:
     """docstring for ChargeCategory"""
 
