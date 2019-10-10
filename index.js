@@ -3,8 +3,8 @@ const fs = require("fs");
 const process = require("process");
 
 async function start(user, pass, bank) {
-    const credentials = { userCode: user, password: pass };
-    const options = { companyId: bank };
+    const credentials = { username: user, password: pass };
+    const options = { companyId: bank};
     const scraper = createScraper(options);
     const scrapeResult = await scraper.scrape(credentials);
 
