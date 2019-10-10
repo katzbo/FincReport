@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
 import requests
 import os
 import json
 import sys
-
+import subprocess
+import charge
+from charge import Charge
 
 googleApiKey = "key=xxx"
 
@@ -73,13 +73,6 @@ class ChargeCategory:
 if __name__ == "__main__":
     if not os.path.exists("node_modules"):
         os.system("npm install")
-    #categoryList = []
-    #charge1 = Charge("delek", 12, "paz", "12.2.84")
-    # addChargeToCategory(charge1)
-    #charge2 = Charge("delek", 34, "paz", "12.2.84")
-    # addChargeToCategory(charge2)
-    #print("the sum of category " + categoryList[0].name + " and sum " + str(categoryList[0].sum))
-    #os.system("webdriver-manager start &")
 
     try:
         # get user, pass, bank
@@ -90,13 +83,11 @@ if __name__ == "__main__":
         print("bank could be one of: 'hapoalim', 'leumi', 'discount', 'otsarHahayal', 'visaCal', 'leumiCard', 'isracard', 'amex'")
         sys.exit(1)
 
-    # prepare expenses
-    os.system(f"node index.js {user} {password} {bank}")
-
+    run_scrapper_cmd = "node index.js {} {} {}".format(user, password, bank)
+    subprocess.check_call(run_scrapper_cmd, shell=True)
     # read expenses
-    with open("accounts.json", errors="ignore") as file:
+    with open("accounts.json") as file:
         expenses = json.load(file)["accounts"][0]["txns"]
-
-    # most recent expense
-    for key, value in expenses[0].items():
-        print(f"{key}: {value}")
+    for expense in expenses:
+    	pr = Charge(expense)
+    	print(pr)
